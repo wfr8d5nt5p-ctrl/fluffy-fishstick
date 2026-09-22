@@ -1,4 +1,6 @@
-# ConeEats · ConeEats
+# ConeEats
+
+Multi-vendor food delivery & ordering platform — WeChat mini-program (C-end) · Spring Boot backend · Vue3 admin console.
 
 一个基于「苍穹外卖」二次开发的**多商家外卖点餐系统**（全栈工程）。
 
