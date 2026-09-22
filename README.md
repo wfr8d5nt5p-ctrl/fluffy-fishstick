@@ -2,7 +2,7 @@
 
 Multi-vendor food delivery & ordering platform — WeChat mini-program (C-end) · Spring Boot backend · Vue3 admin console.
 
-一个基于「苍穹外卖」二次开发的**多商家外卖点餐系统**（全栈工程）。
+一个从零开发的全栈**多商家外卖点餐系统**（C 端微信小程序 + 管理端 Vue3 + 后端 Spring Boot）。
 
 - 支持多商家入驻，平台管理员可管理全部店铺，商家仅能管理自己店铺（`store_id` 数据隔离）
 - C 端微信小程序点餐 + 管理端 Vue3 后台 + Spring Boot 后端
@@ -11,10 +11,10 @@ Multi-vendor food delivery & ordering platform — WeChat mini-program (C-end) �
 
 ```
 ConeEats/
-├─ backend/       Spring Boot 后端（Java 8 + Maven，多模块）
-│  ├─ sky-common  公共组件（Result/JWT/OSS/常量）
-│  ├─ sky-pojo    实体/DTO/VO
-│  └─ sky-server  服务端（Controller/Service/Mapper/WebSocket）
+│  ├─ backend/       Spring Boot 后端（Java 17 + Maven，多模块）
+│  │  ├─ sky-common  公共组件（Result/JWT/OSS/常量）
+│  │  ├─ sky-pojo    实体/DTO/VO
+│  │  └─ sky-server  服务端（Controller/Service/Mapper/WebSocket）
 ├─ miniprogram/   微信小程序（C 端用户点餐）
 └─ admin-web/     管理端前端（Vue 3 + Vite + Element Plus）
 ```
@@ -69,6 +69,20 @@ npm run dev
 | 商家 | 店铺 id | 仅本店 |
 
 登录 `admin/123456`（管理员）测试管理端。
+
+## 性能压测（Locust）
+
+C 端菜单浏览接口（`/user/dish/list`、`/user/setmeal/list`）在 50 并发、60 秒下的压测结果（`loadtest/locustfile.py`，Redis 缓存命中）：
+
+| 指标 | 修复前 | 修复后 |
+|---|---|---|
+| 总请求数 | 61,078（6,180 失败） | **71,363（0 失败）** |
+| 整体 QPS | ~1,043 | **~1,204** |
+| 平均响应时间 | 9.8 ms | **6.2 ms** |
+| P99 响应时间 | 29 ms | **17 ms** |
+| 套餐列表接口 | 99.8% 失败（缓存反序列化 500） | **0% 失败** |
+
+> 修复内容：Spring Cache 启用 Jackson 类型信息（`@class`）后，`GenericJackson2JsonRedisSerializer` 可将缓存值正确还原为 `Result<List<SetmealVO>>`，解决缓存反序列化 `ClassCastException` 导致的 500。
 
 ## 安全说明
 

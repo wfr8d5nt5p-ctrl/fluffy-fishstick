@@ -128,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
 
         // 3. 调用微信支付统一下单
         JSONObject jsonObject = weChatPayUtil.pay(orders.getNumber(),
-                orders.getAmount(), "苍穹外卖订单", openid);
+                orders.getAmount(), "ConeEats 订单", openid);
 
         System.out.println(jsonObject.toJSONString());
         // 4. 返回前端需要调起支付的参数
