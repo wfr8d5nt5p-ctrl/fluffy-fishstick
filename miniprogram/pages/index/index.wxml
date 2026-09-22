@@ -1,0 +1,116 @@
+<wxs module="fmt">
+  module.exports = {
+    money: function (v) { return (v == null ? 0 : Number(v)).toFixed(2) }
+  }
+</wxs>
+
+<view class="page">
+  <!-- 返回 + 店铺信息 -->
+  <view class="appbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="sback" catchtap="goBack">‹</view>
+    <view class="shopline" wx:if="{{store}}">
+      <text class="shop-name">{{store.name}}</text>
+      <view class="shop-meta">
+        <text class="sm-star">★ {{store.rating || '5.0'}}</text>
+        <text class="m-dot"></text>
+        <text class="sm-txt">月售{{store.monthlySales || 0}}</text>
+        <text class="m-dot"></text>
+        <text class="sm-txt">{{store.deliveryTime || 30}}分钟</text>
+        <text class="m-dot"></text>
+        <text class="sm-txt">¥{{store.minPrice || 0}}起送</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 主体：左分类 + 右商品 -->
+  <view class="main">
+    <scroll-view class="rail" scroll-y>
+      <view wx:for="{{menus}}" wx:key="id"
+            class="cat {{index === activeIndex ? 'on' : ''}}"
+            data-idx="{{index}}" bindtap="selectCat">
+        <text class="cat-name">{{item.name}}</text>
+      </view>
+    </scroll-view>
+
+    <scroll-view class="content" scroll-y>
+      <view wx:if="{{items.length}}" class="list">
+        <view class="sec-title">大家都在点</view>
+        <view class="food" wx:for="{{items}}" wx:key="id">
+          <image class="food-img" src="{{item.image}}" mode="aspectFill" lazy-load />
+          <view class="food-info">
+            <text class="food-name">{{item.name}}<text wx:if="{{item.type === 2}}" class="tag-s">套餐</text></text>
+            <text class="food-desc" wx:if="{{item.desc}}">{{item.desc}}</text>
+            <view class="food-bottom">
+              <text class="price"><text class="yen">¥</text>{{fmt.money(item.price)}}</text>
+              <view class="stepper">
+                <view wx:if="{{item.cart > 0}}" class="btn minus" data-id="{{item.id}}" data-type="{{item.type}}" catchtap="sub">−</view>
+                <text wx:if="{{item.cart > 0}}" class="num">{{item.cart}}</text>
+                <view class="btn" data-id="{{item.id}}" data-type="{{item.type}}" catchtap="add">+</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:else class="empty">
+        <text>{{loading ? '加载中…' : '该店暂无商品'}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 打烊遮罩 -->
+  <view wx:if="{{store && store.status === 0}}" class="closed-mask">
+    <view class="closed-card">
+      <text class="closed-t">店铺打烊了</text>
+      <text class="closed-s">营业时间再来点餐哦</text>
+    </view>
+  </view>
+
+  <!-- 底部购物车 -->
+  <view class="cartbar" bindtap="goCart">
+    <view class="cart-left">
+      <view class="cart-ico {{cartCount ? 'has' : ''}}">🛒<text wx:if="{{cartCount}}" class="badge">{{cartCount}}</text></view>
+      <block wx:if="{{cartCount}}">
+        <view class="cart-money">
+          <text class="cm-yen">¥</text><text class="cm-num">{{fmt.money(cartTotal)}}</text>
+        </view>
+        <text class="cart-hint" wx:if="{{!reachMin}}">还差 ¥{{fmt.money(diff)}} 起送</text>
+        <text class="cart-hint ok" wx:else>已可结算</text>
+      </block>
+      <text class="cart-hint" wx:else>点好的餐在这里</text>
+    </view>
+    <view class="cart-go {{cartCount ? '' : 'disabled'}}">{{cartCount ? (reachMin ? '去结算' : '选好了') : '未选购'}}</view>
+  </view>
+
+  <!-- 购物车明细弹层 -->
+  <view class="cmsk" wx:if="{{showCart}}" catchtouchmove="true" bindtap="closeCart">
+    <view class="cmpanel" catchtap="noop">
+      <view class="cm-head">
+        <text class="cm-title">已选商品</text>
+        <text class="cm-clean" bindtap="cartClean">清空</text>
+      </view>
+      <scroll-view class="cm-list" scroll-y>
+        <view class="cm-item" wx:for="{{cartItems}}" wx:key="key">
+          <view class="cm-info">
+            <text class="cm-name">{{item.name}}</text>
+            <text class="cm-price">¥{{fmt.money(item.price)}}</text>
+          </view>
+          <view class="stepper">
+            <view class="btn minus" data-id="{{item.id}}" data-type="{{item.type}}" catchtap="cartSub">−</view>
+            <text class="num">{{item.num}}</text>
+            <view class="btn" data-id="{{item.id}}" data-type="{{item.type}}" catchtap="cartAdd">+</view>
+          </view>
+        </view>
+        <view wx:if="{{!cartItems.length}}" class="cm-empty">购物车空空如也</view>
+      </scroll-view>
+      <view class="cm-foot">
+        <view class="cm-total">
+          <text class="cm-total-l">合计</text>
+          <view class="cart-money">
+            <text class="cm-yen">¥</text><text class="cm-num">{{fmt.money(cartTotal)}}</text>
+          </view>
+        </view>
+        <view class="cm-go {{reachMin ? '' : 'disabled'}}" bindtap="goCheckout">{{reachMin ? '去结算' : '还差¥' + fmt.money(diff) + '起送'}}</view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>商家端 - 来单提醒</title>
+    <style>
+        body { font-family: "Microsoft YaHei", sans-serif; padding: 20px; }
+        h2 { color: #ff6b00; }
+        .msg { margin-top: 12px; }
+        .order-item { border: 1px solid #ffd0a3; background: #fff7f0; padding: 10px; margin: 6px 0; border-radius: 6px; }
+        .order-item .order-id { color: #e6530d; font-weight: bold; }
+        .toast { position: fixed; top: 20px; right: 20px; background: #ff6b00; color: #fff; padding: 14px 20px;
+                 border-radius: 8px; display: none; box-shadow: 0 4px 12px rgba(0,0,0,.2); }
+        .toast.show { display: block; }
+    </style>
+</head>
+<body>
+    <h2>商家端 - 来单提醒（WebSocket）</h2>
+    <div id="status" style="color:#888;">正在连接...</div>
+    <div id="message" class="msg"></div>
+    <div id="toast" class="toast">🔔 您有新的订单！</div>
+
+    <script type="text/javascript">
+        var websocket = null;
+        var clientId = Math.random().toString(36).substr(2);
+
+        // 预加载提醒音频
+        var reminderAudio = new Audio('audio/reminder.mp3');
+        var previewAudio  = new Audio('audio/preview.mp3');
+        reminderAudio.oncanplaythrough = function(){ console.log('reminder.mp3 可播放'); };
+
+        if('WebSocket' in window){
+            var proto = location.protocol === 'https:' ? 'wss' : 'ws';
+            websocket = new WebSocket(proto + '://' + location.host + '/ws/' + clientId);
+        } else {
+            alert('Not support websocket');
+        }
+
+        websocket.onopen = function(){
+            document.getElementById('status').innerHTML = '✅ 连接成功：' + clientId;
+        };
+
+        websocket.onerror = function(){
+            document.getElementById('status').innerHTML = '❌ 连接出错';
+        };
+
+        websocket.onclose = function(){
+            document.getElementById('status').innerHTML = '⚠️ 连接已关闭';
+        };
+
+        // 收到服务端推送的消息
+        websocket.onmessage = function(event){
+            var data = event.data;
+            setMessageInnerHTML('收到: ' + data);
+            parseMessage(data);
+        };
+
+        window.onbeforeunload = function(){
+            websocket.close();
+        };
+
+        // 解析服务端 JSON，type=1 表示来单提醒，播放语音并弹提示
+        function parseMessage(data){
+            try {
+                var obj = JSON.parse(data);
+                if (obj.type === 1) {
+                    playReminder(obj);
+                }
+            } catch (e) {
+                console.log('非JSON消息，忽略: ', data);
+            }
+        }
+
+        function playReminder(obj){
+            previewAudio.currentTime = 0;   // 先播提示音
+            previewAudio.play();
+            setTimeout(function(){
+                reminderAudio.currentTime = 0;  // 再播语音
+                reminderAudio.play();
+            }, 800);
+
+            // 显示弹窗
+            var toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(function(){ toast.classList.remove('show'); }, 5000);
+
+            // 追加订单信息
+            setMessageInnerHTML('🔔 <span style="color:#e6530d;font-weight:bold;">来单提醒</span> ' +
+                'orderId=' + obj.orderId + '，' + (obj.content || ''));
+        }
+
+        function setMessageInnerHTML(innerHTML){
+            var div = document.getElementById('message');
+            var span = document.createElement('div');
+            span.className = 'order-item';
+            span.innerHTML = innerHTML;
+            div.appendChild(span);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/index/index",
+    "pages/order/index",
+    "pages/pay/index",
+    "pages/success/index",
+    "pages/address/address",
+    "pages/addOrEditAddress/addOrEditAddress",
+    "pages/historyOrder/historyOrder",
+    "pages/my/my",
+    "pages/login/login"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于为你推荐附近商家和提供配送服务"
+    }
+  },
+  "requiredPrivateInfos": [ "getLocation", "chooseLocation" ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "ConeEats",
+    "navigationBarBackgroundColor": "#FF7A35",
+    "backgroundColor": "#F6EFE6",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#A89383",
+    "selectedColor": "#FF7A35",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/home/index", "text": "首页" },
+      { "pagePath": "pages/historyOrder/historyOrder", "text": "订单" },
+      { "pagePath": "pages/my/my", "text": "我的" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

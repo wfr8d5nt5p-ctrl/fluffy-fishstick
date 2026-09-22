@@ -1,0 +1,20 @@
+# 开发环境配置模板
+# 使用方法：复制本文件为 application-dev.yml，并替换为你的真实配置。
+# 注意：application-dev.yml 已被 .gitignore 忽略，不会提交到仓库。
+sky:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: localhost
+    port: 3306
+    database: sky_take_out
+    username: root
+    password: "<YOUR_DB_PASSWORD>"
+  # Redis 数据源
+  redis:
+    host: localhost
+    port: 6379
+    database: 10
+  # 微信小程序配置（appid 为公开标识，secret 必须保密）
+  wechat:
+    appid: "<YOUR_WECHAT_APPID>"
+    secret: "<YOUR_WECHAT_SECRET>"

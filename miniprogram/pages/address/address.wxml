@@ -1,0 +1,33 @@
+<view class="page">
+  <view class="list">
+    <view class="addr dt-card {{select ? '' : ''}}" wx:for="{{list}}" wx:key="id">
+      <view class="addr-main" data-idx="{{index}}" bindtap="choose">
+        <view class="addr-info">
+          <view class="name-row">
+            <text class="name">{{item.consignee}}</text>
+            <text class="phone">{{item.phone}}</text>
+            <text class="default" wx:if="{{item.isDefault}}">默认</text>
+          </view>
+          <text class="detail">{{item.provinceName}}{{item.cityName}}{{item.districtName}}{{item.detail}}</text>
+        </view>
+        <text wx:if="{{select}}" class="radio {{item.isDefault ? 'on' : ''}}">✓</text>
+      </view>
+      <view class="addr-foot" wx:if="{{!select}}">
+        <view class="set-default" data-idx="{{index}}" data-id="{{item.id}}" bindtap="setDefault">
+          <text class="chk {{item.isDefault ? 'on' : ''}}">✓</text>默认地址
+        </view>
+        <view class="ops">
+          <text class="op" data-id="{{item.id}}" bindtap="edit">编辑</text>
+          <text class="op del" data-idx="{{index}}" data-id="{{item.id}}" bindtap="del">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{!list.length && !loading}}" class="empty">还没有收货地址</view>
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <view class="bar">
+    <button class="dt-btn block" bindtap="add">＋ 新增收货地址</button>
+  </view>
+</view>

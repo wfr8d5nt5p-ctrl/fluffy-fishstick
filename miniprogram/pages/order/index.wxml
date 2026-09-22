@@ -1,0 +1,99 @@
+<wxs module="fmt">
+  module.exports = {
+    money: function (v) { return (v == null ? 0 : Number(v)).toFixed(2) }
+  }
+</wxs>
+
+<view class="page">
+  <view class="addr dt-card">
+    <view class="addr-in">
+      <view class="addr-info">
+        <text class="addr-name">📍 点单店铺 · {{storeName || 'ConeEats'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="addr dt-card" bindtap="chooseAddress">
+    <view wx:if="{{address}}" class="addr-in">
+      <view class="addr-info">
+        <text class="addr-name">{{address.consignee}} {{address.phone}}</text>
+        <text class="addr-detail">{{address.provinceName}}{{address.cityName}}{{address.districtName}}{{address.detail}}</text>
+      </view>
+      <text class="arrow">›</text>
+    </view>
+    <view wx:else class="addr-empty">＋ 请选择收货地址</view>
+  </view>
+
+  <view class="cart dt-card">
+    <view class="cart-head">
+      <text class="cart-title">已点食物</text>
+      <text class="clear" bindtap="clearCart">清空购物车</text>
+    </view>
+    <view class="line" wx:for="{{items}}" wx:key="id">
+      <image class="line-img" src="{{item.image}}" mode="aspectFill" />
+      <view class="line-info">
+        <text class="line-name">{{item.name}}</text>
+        <text class="line-flavor" wx:if="{{item.flavor}}">{{item.flavor}}</text>
+        <view class="line-bottom">
+          <text class="price"><text class="yen">¥</text>{{fmt.money(item.price)}}</text>
+          <view class="stepper">
+            <view class="btn minus" data-dishid="{{item.dishId}}" data-setmealid="{{item.setmealId}}" data-n="{{item.number}}" catchtap="sub">−</view>
+            <text class="num">{{item.number}}</text>
+            <view class="btn" data-dishid="{{item.dishId}}" data-setmealid="{{item.setmealId}}" data-n="{{item.number}}" catchtap="add">＋</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="opts dt-card">
+    <view class="opt">
+      <text class="opt-l">备注</text>
+      <input class="opt-in" placeholder="口味偏好、忌口" placeholder-class="ph" value="{{remark}}" bindinput="onRemark" />
+    </view>
+    <view class="opt">
+      <text class="opt-l">餐具</text>
+      <view class="opt-btns">
+        <text class="ob {{tableware === 1 ? 'on' : ''}}" data-v="1" bindtap="onTableware">按餐量提供</text>
+        <text class="ob {{tableware === 0 ? 'on' : ''}}" data-v="0" bindtap="onTableware">不需要</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 费用明细 -->
+  <view class="fee dt-card">
+    <view class="fee-row">
+      <text class="fee-l">商品小计</text>
+      <text class="fee-v"><text class="yen">¥</text>{{total}}</text>
+    </view>
+    <view class="fee-row">
+      <text class="fee-l">配送费</text>
+      <text class="fee-v free">免配送费</text>
+    </view>
+    <view class="fee-row">
+      <text class="fee-l">优惠券</text>
+      <text class="fee-v coupon">-¥0.00</text>
+    </view>
+    <view class="fee-row fee-total">
+      <text class="fee-l">合计</text>
+      <text class="fee-v hot"><text class="yen">¥</text>{{total}}</text>
+    </view>
+  </view>
+
+  <!-- 支付方式 -->
+  <view class="paycard dt-card">
+    <view class="pay-row">
+      <text class="pay-ic">💳</text>
+      <text class="pay-l">支付方式</text>
+      <text class="pay-val"><text class="pay-check">✓</text> 微信支付</text>
+    </view>
+  </view>
+
+  <view class="foot">
+    <view class="foot-info">
+      <text class="foot-count">共 {{foodCount}} 件</text>
+      <text class="foot-total"><text class="yen">¥</text>{{fmt.money(total)}}</text>
+    </view>
+    <view class="foot-submit {{loading ? 'disabled' : ''}}" bindtap="submit">{{loading ? '提交中…' : '提交订单'}}</view>
+  </view>
+</view>

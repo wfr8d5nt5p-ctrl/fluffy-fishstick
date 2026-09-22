@@ -1,0 +1,131 @@
+<view class="page">
+  <!-- 顶部：定位 + 品牌 -->
+  <view class="appbar" style="padding-top: {{statusBarHeight}}px;">
+    <view class="ab-loc" bindtap="onChooseLocation" hover-class="ab-loc-hover">
+      <text class="loc-txt">{{locationName}}</text>
+      <text class="loc-arrow">▾</text>
+    </view>
+    <text class="ab-title"><text class="brand-dot">蛋筒</text>到家</text>
+    <view class="ab-right"></view>
+  </view>
+
+  <!-- 搜索 -->
+  <view class="search">
+    <text class="s-icon">🔍</text>
+    <input class="s-in" placeholder="搜索店名 / 美食 / 主营" placeholder-class="ph" confirm-type="search"
+           value="{{keyword}}" bindinput="onSearch" bindconfirm="loadStores" />
+    <text wx:if="{{keyword}}" class="s-clear" catchtap="clearSearch">✕</text>
+  </view>
+
+  <!-- 金刚区分类 -->
+  <scroll-view class="rail" scroll-x>
+    <view wx:for="{{cats}}" wx:key="name"
+          class="chip {{item.name === activeCat ? 'on' : ''}}"
+          data-c="{{item.name}}" bindtap="tapCat">
+      <text class="chip-ic">{{item.ic}}</text>
+      <text class="chip-t">{{item.name}}</text>
+    </view>
+  </scroll-view>
+
+  <!-- 优惠券横幅 -->
+  <view class="coupon" bindtap="coupon">
+    <view class="coupon-l">
+      <text class="coupon-title">限时领券 · 满30减8</text>
+      <text class="coupon-sub">新客首单额外立减，下单自动抵扣</text>
+    </view>
+    <view class="coupon-btn">立即领取</view>
+  </view>
+
+  <!-- 附近好店 -->
+  <view class="sec-cnt">
+    <view class="sec-head">
+      <text class="sec-t">附近好店</text>
+      <view class="sec-more" bindtap="goMore"><text>更多</text><text class="more-a">›</text></view>
+    </view>
+    <view class="store-list">
+      <view class="store" wx:for="{{stores}}" wx:key="id"
+            data-id="{{item.id}}" data-name="{{item.name}}" bindtap="goStore">
+        <image class="store-img" src="{{item.img}}" mode="aspectFill" lazy-load />
+        <view class="store-info">
+          <view class="store-name-row">
+            <text class="store-name">{{item.name}}</text>
+            <text class="store-tag {{item.closed ? 'tag-off' : 'tag-on'}}">{{item.closed ? '休息中' : '营业中'}}</text>
+          </view>
+          <view class="store-meta">
+            <text class="star">★ {{item.rating || '5.0'}}</text>
+            <text class="m-dot"></text>
+            <text class="m-txt">月售{{item.monthlySales || 0}}</text>
+            <text class="m-dot"></text>
+            <text class="m-txt">{{item.deliveryTime || 30}}分钟</text>
+            <text class="m-dot"></text>
+            <text class="m-txt">{{item.distanceKm || 1}}km</text>
+          </view>
+          <view class="store-fee">
+            <text>¥{{item.minPrice || 0}}起送</text>
+            <text class="m-dot"></text>
+            <text>{{item.deliverFee ? '配送费¥' + item.deliverFee : '免配送费'}}</text>
+          </view>
+          <view class="store-tags" wx:if="{{item.tags.length}}">
+            <text wx:for="{{item.tags}}" wx:key="c" wx:for-item="tg" class="stc {{tg.c}}">{{tg.t}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{!stores.length && !loading}}" class="empty">
+        <text class="empty-t">附近暂时没有相关店铺</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 微信授权弹窗：美团式，用户自主点授权 -->
+  <view class="mask" wx:if="{{showAuth}}" catchtouchmove="true">
+    <view class="auth-card">
+      <view class="auth-title">微信授权</view>
+      <view class="auth-sub">完善头像与昵称，更好地为你服务</view>
+
+      <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image class="avatar" src="{{auth.avatar}}" mode="aspectFill" />
+        <text class="avatar-hint">点击选择微信头像</text>
+      </button>
+
+      <input class="nick" type="nickname" placeholder="请输入微信昵称" placeholder-class="ph"
+             value="{{auth.nick}}" bindinput="onNick" />
+
+      <view class="phone-row">
+        <input class="phone" type="number" maxlength="11" placeholder="请输入手机号" placeholder-class="ph"
+               value="{{auth.phone}}" bindinput="onPhone" />
+        <button class="getphone" open-type="getPhoneNumber" bindgetphonenumber="onGetPhone">一键获取</button>
+      </view>
+
+      <button class="confirm {{auth.loading ? 'dis' : ''}}" bindtap="submitAuth">
+        {{auth.loading ? '保存中…' : '确认并开始'}}
+      </button>
+      <view class="skip" bindtap="skipAuth">暂不授权，先逛逛</view>
+    </view>
+  </view>
+
+  <!-- 地址选择面板：选点失败时的降级，保证一定能弹 -->
+  <view class="mask" wx:if="{{showLoc}}" catchtouchmove="true" bindtap="closeLocPanel">
+    <view class="loc-card" catchtap="noop">
+      <view class="loc-head">
+        <text class="loc-h-title">切换地址</text>
+        <text class="loc-close" bindtap="closeLocPanel">✕</text>
+      </view>
+      <view class="loc-gps" bindtap="useGps">
+        <text class="gps-dot">{{isLocating ? '…' : '◎'}}</text>
+        <text>{{isLocating ? '定位中…' : '使用当前位置定位'}}</text>
+      </view>
+      <view class="loc-input-row">
+        <input class="loc-input" placeholder="输入城市或手动填地址" placeholder-class="ph"
+               value="{{locInput}}" bindinput="onLocInput" />
+        <view class="loc-ok" bindtap="confirmLoc">确定</view>
+      </view>
+      <view class="loc-hot">热门城市</view>
+      <view class="city-grid">
+        <view class="city" wx:for="{{cities}}" wx:key="name"
+              data-name="{{item.name}}" data-lng="{{item.lng}}" data-lat="{{item.lat}}"
+              bindtap="tapCity">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+</view>

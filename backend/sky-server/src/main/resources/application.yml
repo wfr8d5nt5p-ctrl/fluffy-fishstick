@@ -1,0 +1,59 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    druid:
+      driver-class-name: ${sky.datasource.driver-class-name}
+      url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${sky.datasource.username}
+      password: ${sky.datasource.password}
+
+    # Redis数据源配置（占位符，具体值在application-dev.yml中提供）
+    data:
+      redis:
+        host: ${sky.redis.host}
+        port: ${sky.redis.port}
+        database: ${sky.redis.database}
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sky.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      sky:
+        mapper: debug
+        service: info
+        controller: info
+
+sky:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: itcast
+    # 设置jwt过期时间
+    admin-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    admin-token-name: token
+    # 设置用户端微信用户jwt签名加密时使用的秘钥
+    user-secret-key: itheima
+    # 设置用户端微信用户jwt过期时间
+    user-ttl: 7200000
+    # 设置用户端前端传递过来的令牌名称
+    user-token-name: authentication
+  alioss:
+    # 阿里云OSS配置
+    endpoint: oss-cn-beijing.aliyuncs.com
+    # ⚠️ 请替换为你自己的阿里云OSS AccessKey（切勿提交真实密钥）
+    access-key-id: <YOUR_ACCESS_KEY_ID>
+    access-key-secret: <YOUR_ACCESS_KEY_SECRET>
+    bucket-name: <YOUR_BUCKET_NAME>

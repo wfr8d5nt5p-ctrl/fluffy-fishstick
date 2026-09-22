@@ -1,0 +1,69 @@
+.page { min-height: 100vh; padding-bottom: 60rpx; }
+.head {
+  display: flex; align-items: center; gap: 26rpx; padding: 60rpx 40rpx;
+  background: linear-gradient(135deg, #FFE9DA, #F6EFE6);
+}
+.avatar { width: 128rpx; height: 128rpx; border-radius: 50%; background: #fff; border: 6rpx solid #fff; box-shadow: 0 6rpx 20rpx rgba(230,83,34,.12); }
+.who { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.name { font-size: 36rpx; font-weight: 800; }
+.phone { margin-top: 8rpx; font-size: 24rpx; color: var(--ink-2); }
+.edit { display: flex; align-items: center; gap: 6rpx; padding: 10rpx 8rpx; flex-shrink: 0; }
+.edit-ic { color: var(--brand); font-size: 26rpx; }
+.edit-t { font-size: 24rpx; color: var(--brand); }
+.arrow { color: var(--muted); font-size: 36rpx; margin-left: 2rpx; }
+.ip { margin: 6rpx 40rpx 0; font-size: 22rpx; color: #A89383; }
+
+.grid {
+  margin: 24rpx 30rpx;
+  padding: 10rpx 0;
+  display: flex; flex-wrap: wrap;
+}
+.cell {
+  width: 33.33%; display: flex; flex-direction: column; align-items: center;
+  gap: 14rpx; padding: 30rpx 0;
+}
+.ic {
+  width: 96rpx; height: 96rpx; border-radius: 28rpx;
+  background: linear-gradient(135deg, #FFEDE1, #FFD9C0);
+  display: flex; align-items: center; justify-content: center;
+}
+.ic text { font-size: 48rpx; }
+.ct { font-size: 24rpx; color: var(--ink-2); }
+
+.logout { display: block; width: auto; margin: 50rpx 30rpx 0; padding: 26rpx; text-align: center; color: #E6573C; font-size: 28rpx; font-weight: 600; }
+.logout::after { border: none; }
+.ver { margin-top: 24rpx; text-align: center; font-size: 22rpx; color: #B5A397; }
+
+/* 优惠券卡 */
+.coupon-card {
+  margin: 24rpx 30rpx 0;
+  background: linear-gradient(120deg, #EAF9F2, #DFF3EA);
+  border-radius: 20rpx;
+  padding: 26rpx 28rpx;
+  display: flex; align-items: center; gap: 20rpx;
+}
+.coupon-ic { font-size: 44rpx; }
+.coupon-info { flex: 1; display: flex; flex-direction: column; gap: 6rpx; }
+.coupon-count { font-size: 30rpx; font-weight: 800; color: #1F7A52; }
+.coupon-desc { font-size: 22rpx; color: #4E9774; }
+.coupon-btn {
+  flex-shrink: 0; font-size: 24rpx; font-weight: 600; color: #1F9E6C;
+  border: 1rpx solid #8FD9BB; padding: 10rpx 24rpx; border-radius: 999rpx; background: #fff;
+}
+
+/* 常点店铺 */
+.freq { margin: 24rpx 30rpx; }
+.freq-head { display: flex; align-items: center; justify-content: space-between; padding: 0 4rpx 16rpx; }
+.freq-t { font-size: 30rpx; font-weight: 800; color: var(--ink); }
+.freq-all { display: flex; align-items: center; gap: 4rpx; font-size: 24rpx; color: var(--muted); }
+.freq-item {
+  display: flex; align-items: center; gap: 18rpx;
+  background: #fff; border-radius: 18rpx; padding: 18rpx; margin-bottom: 16rpx;
+  box-shadow: 0 4rpx 18rpx rgba(61,44,28,.05);
+}
+.fimg { width: 88rpx; height: 88rpx; border-radius: 14rpx; flex-shrink: 0; background: #f0e5d8; }
+.fimg.fph { display: flex; align-items: center; justify-content: center; color: #fff; font-size: 40rpx; font-weight: 800; }
+.fwho { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 8rpx; }
+.fname { font-size: 28rpx; font-weight: 700; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.flast { font-size: 22rpx; color: var(--muted); }
+.fbtn { flex-shrink: 0; font-size: 24rpx; color: var(--brand); border: 1rpx solid var(--brand); padding: 10rpx 26rpx; border-radius: 999rpx; }

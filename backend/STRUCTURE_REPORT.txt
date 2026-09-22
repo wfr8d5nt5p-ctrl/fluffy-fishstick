@@ -1,0 +1,81 @@
+﻿=== entity (sky-pojo) ===
+AddressBook.java
+Category.java
+Dish.java
+DishFlavor.java
+Employee.java
+OrderDetail.java
+Orders.java
+Setmeal.java
+SetmealDish.java
+ShoppingCart.java
+User.java
+
+=== dto (sky-pojo) ===
+CategoryDTO.java
+CategoryPageQueryDTO.java
+DataOverViewQueryDTO.java
+DishDTO.java
+DishPageQueryDTO.java
+EmployeeDTO.java
+EmployeeLoginDTO.java
+EmployeePageQueryDTO.java
+GoodsSalesDTO.java
+OrdersCancelDTO.java
+OrdersConfirmDTO.java
+OrdersDTO.java
+OrdersPageQueryDTO.java
+OrdersPaymentDTO.java
+OrdersRejectionDTO.java
+OrdersSubmitDTO.java
+PasswordEditDTO.java
+SetmealDTO.java
+SetmealPageQueryDTO.java
+ShoppingCartDTO.java
+UserLoginDTO.java
+
+=== vo (sky-pojo) ===
+BusinessDataVO.java
+DishItemVO.java
+DishOverViewVO.java
+DishVO.java
+EmployeeLoginVO.java
+OrderOverViewVO.java
+OrderPaymentVO.java
+OrderReportVO.java
+OrderStatisticsVO.java
+OrderSubmitVO.java
+OrderVO.java
+SalesTop10ReportVO.java
+SetmealOverViewVO.java
+SetmealVO.java
+TurnoverReportVO.java
+UserLoginVO.java
+UserReportVO.java
+
+=== mapper (sky-server) ===
+CategoryMapper.java
+DishFlavorMapper.java
+DishMapper.java
+EmployeeMapper.java
+SetmealDishMapper.java
+SetmealMapper.java
+UserMapper.java
+
+=== service (sky-server) ===
+CategoryService.java
+DishService.java
+EmployeeService.java
+UserService.java
+
+=== controller\user ===
+CategoryController.java
+ShopController.java
+UserController.java
+
+=== controller\admin ===
+CategoryController.java
+CommonController.java
+DishController.java
+EmployeeController.java
+ShopController.java

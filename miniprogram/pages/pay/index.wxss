@@ -1,0 +1,19 @@
+.page { min-height: 100vh; padding: 60rpx 30rpx; }
+.box { padding: 50rpx 40rpx 60rpx; text-align: center; }
+.t { font-size: 26rpx; color: var(--ink-2); }
+.amount { display: block; font-size: 76rpx; font-weight: 800; color: var(--brand-deep); margin: 16rpx 0 8rpx; }
+.amount .yen { font-size: 40rpx; }
+.no { font-size: 22rpx; color: var(--muted); }
+.pay-row {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 40rpx 0 30rpx; padding: 28rpx 24rpx;
+  background: var(--bg); border-radius: 16rpx;
+}
+.method { font-size: 28rpx; font-weight: 700; }
+.method-val { font-size: 26rpx; color: #2FB98A; font-weight: 600; }
+.method-val .c {
+  display: inline-flex; width: 32rpx; height: 32rpx; align-items: center; justify-content: center;
+  background: #2FB98A; color: #fff; border-radius: 50%; font-size: 18rpx; margin-right: 8rpx;
+}
+.pay { margin-top: 10rpx; }
+.later { margin-top: 26rpx; font-size: 26rpx; color: var(--muted); text-align: center; }

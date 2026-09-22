@@ -1,0 +1,16 @@
+<wxs module="fmt">
+  module.exports = { money: function (v) { return (v == null ? 0 : Number(v)).toFixed(2) } }
+</wxs>
+<view class="page">
+  <view class="ok">✓</view>
+  <text class="title">支付成功</text>
+  <text class="sub">已通知商家备餐，请耐心等待配送</text>
+
+  <view class="card dt-card">
+    <view class="row"><text class="k">订单号</text><text class="v">{{orderNumber}}</text></view>
+    <view class="row"><text class="k">实付金额</text><text class="v">¥{{fmt.money(amount)}}</text></view>
+  </view>
+
+  <button class="dt-btn block" bindtap="viewOrder">查看订单</button>
+  <view class="home" bindtap="backHome">回到首页</view>
+</view>

@@ -1,0 +1,15 @@
+.page { min-height: 100vh; padding: 24rpx 30rpx; }
+.form { padding: 8rpx 28rpx; }
+.row { display: flex; align-items: center; gap: 20rpx; padding: 24rpx 0; border-bottom: 1rpx solid var(--line); }
+.row:last-child { border: none; }
+.label { width: 150rpx; flex-shrink: 0; font-size: 28rpx; font-weight: 700; }
+.val { flex: 1; font-size: 27rpx; }
+.ph { color: #B5A397; }
+.region { color: var(--ink); }
+.seg { display: flex; gap: 14rpx; }
+.sg { font-size: 24rpx; padding: 8rpx 26rpx; border: 2rpx solid var(--line); border-radius: 999rpx; color: var(--ink-2); }
+.sg.on { color: var(--brand); border-color: var(--brand); background: var(--brand-soft); }
+.chips { display: flex; gap: 14rpx; }
+.chip { font-size: 24rpx; padding: 8rpx 22rpx; border: 2rpx solid var(--line); border-radius: 8rpx; color: var(--ink-2); }
+.chip.on { color: var(--brand); border-color: var(--brand); background: var(--brand-soft); }
+.save { margin-top: 40rpx; }

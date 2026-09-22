@@ -1,0 +1,29 @@
+# ===== 密钥与敏感配置（绝不提交）=====
+# 后端各环境的真实配置：数据库密码、微信 secret、OSS 等
+backend/sky-server/src/main/resources/application*.yml
+!backend/sky-server/src/main/resources/application.yml
+!backend/sky-server/src/main/resources/application-dev.example.yml
+
+# ===== Java / Maven =====
+target/
+*.class
+*.jar
+*.war
+*.log
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# ===== Node / 前端 =====
+node_modules/
+dist/
+*.log
+
+# ===== 小程序 =====
+**/project.private.config.json
+
+# ===== 环境变量 =====
+.env
+.env.*
+!.env.example

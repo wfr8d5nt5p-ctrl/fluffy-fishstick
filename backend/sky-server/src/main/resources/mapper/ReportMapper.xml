@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sky.mapper.ReportMapper">
+
+    <!--  统计指定状态、指定时间范围内的订单营业额  -->
+    <select id="sumAmountByStatusAndDate" resultType="java.lang.Double">
+        select ifnull(sum(amount),0) from orders
+        where status=#{status} and checkout_time between #{begin} and #{end}
+        <if test="storeId != null">
+            and store_id = #{storeId}
+        </if>
+    </select>
+
+    <!--  统计指定状态、指定时间范围内的订单数  -->
+    <select id="countOrderByStatusAndDate" resultType="java.lang.Integer">
+        select count(*) from orders
+        where status=#{status} and order_time between #{begin} and #{end}
+        <if test="storeId != null">
+            and store_id = #{storeId}
+        </if>
+    </select>
+
+    <!--  统计指定时间范围内的订单总数  -->
+    <select id="countAllOrderByDate" resultType="java.lang.Integer">
+        select count(*) from orders
+        where order_time between #{begin} and #{end}
+        <if test="storeId != null">
+            and store_id = #{storeId}
+        </if>
+    </select>
+
+    <!--  统计指定时间范围内在本店下首单的独立用户数（该店新增顾客）  -->
+    <select id="countNewUserInStore" resultType="java.lang.Integer">
+        select count(*) from (
+            select user_id, min(order_time) first_order_time
+            from orders
+            where store_id = #{storeId}
+            group by user_id
+        ) t
+        where t.first_order_time between #{begin} and #{end}
+    </select>
+
+    <!--  统计指定时间之前在本店下过单的累计独立用户数（该店累计顾客）  -->
+    <select id="countTotalUserInStore" resultType="java.lang.Integer">
+        select count(distinct user_id) from orders
+        where store_id = #{storeId} and order_time &lt; #{end}
+    </select>
+
+    <!--  统计指定时间范围内销量排名 Top10（按店铺隔离，平台管理员 storeId 为 null 时查全部）  -->
+    <select id="getSalesTop10" resultType="com.sky.vo.SalesTop10ReportVO">
+        select od.name, sum(od.number) number
+        from order_detail od
+        left join orders o on od.order_id = o.id
+        where o.order_time between #{begin} and #{end}
+        <if test="storeId != null">
+            and o.store_id = #{storeId}
+        </if>
+        group by od.name
+        order by number desc
+        limit 10
+    </select>
+</mapper>

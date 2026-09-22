@@ -1,0 +1,39 @@
+<wxs module="fmt">
+  module.exports = { money: function (v) { return (v == null ? 0 : Number(v)).toFixed(2) } }
+</wxs>
+<view class="page">
+  <scroll-view class="tabs" scroll-x enhanced show-scrollbar="{{false}}">
+    <view
+      wx:for="{{tabs}}" wx:key="key"
+      class="tab {{activeKey === item.key ? 'on' : ''}}"
+      data-key="{{item.key}}" bindtap="switchTab">{{item.name}}</view>
+  </scroll-view>
+
+  <view class="body">
+    <view class="card dt-card" wx:for="{{list}}" wx:key="id">
+      <view class="head">
+        <text class="time">{{item.time}}</text>
+        <text class="status s{{item.status}}">{{item.statusText}}</text>
+      </view>
+      <view class="store">
+        <image wx:if="{{item.storeImage}}" class="store-img" src="{{item.storeImage}}" mode="aspectFill" />
+        <view wx:else class="store-img initials" style="background:{{item.storeColor}}">{{item.storeInitial}}</view>
+        <text class="store-name">{{item.storeName}}</text>
+      </view>
+      <view class="mid">
+        <text class="no">订单号：{{item.number}}</text>
+        <text class="amount"><text class="yen">¥</text>{{fmt.money(item.amount)}}</text>
+      </view>
+      <view class="addr" wx:if="{{item.address}}">{{item.address}}</view>
+      <view class="act" wx:if="{{item.storeId}}">
+        <view class="btn" data-storeid="{{item.storeId}}" data-name="{{item.storeName}}" bindtap="goAgain">再来一单</view>
+      </view>
+    </view>
+
+    <view class="empty" wx:if="{{!list.length && !loading}}">
+      <text>暂时没有相关订单</text>
+      <view class="go" bindtap="goOrder">去点餐</view>
+    </view>
+    <view class="empty muted" wx:if="{{loading}}">加载中…</view>
+  </view>
+</view>

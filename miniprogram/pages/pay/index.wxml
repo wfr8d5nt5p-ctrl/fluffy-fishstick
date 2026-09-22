@@ -1,0 +1,18 @@
+<wxs module="fmt">
+  module.exports = { money: function (v) { return (v == null ? 0 : Number(v)).toFixed(2) } }
+</wxs>
+<view class="page">
+  <view class="box dt-card">
+    <text class="t">待支付金额</text>
+    <text class="amount"><text class="yen">¥</text>{{fmt.money(amount)}}</text>
+    <text class="no">订单号：{{orderNumber}}</text>
+
+    <view class="pay-row">
+      <text class="method">支付方式</text>
+      <view class="method-val"><text class="c">✓</text> 微信支付</view>
+    </view>
+
+    <button class="dt-btn pay" bindtap="pay" disabled="{{paying}}">{{paying ? '支付中…' : '立即支付'}}</button>
+    <view class="later" bindtap="laterPay">稍后支付</view>
+  </view>
+</view>

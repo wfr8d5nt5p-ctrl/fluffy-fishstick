@@ -1,0 +1,50 @@
+/* ConeEats 全局样式（焦糖蛋筒橙 + 奶油暖调） */
+page {
+  --brand: #FF7A35;
+  --brand-deep: #E65322;
+  --brand-soft: #FFF0E6;
+  --ink: #33241B;
+  --ink-2: #7A6255;
+  --muted: #A99385;
+  --line: #F0E4D8;
+  --bg: #F6EFE6;
+  --card: #FFFFFF;
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+}
+
+view, text, image, button, input, textarea { box-sizing: border-box; }
+button::after { border: none; }
+button { background: none; padding: 0; margin: 0; line-height: inherit; }
+image { width: 100%; height: auto; }
+
+/* 通用卡片 */
+.dt-card {
+  background: var(--card);
+  border-radius: 20rpx;
+  box-shadow: 0 6rpx 24rpx rgba(230, 83, 34, .06);
+}
+
+/* 通用按钮 */
+.dt-btn {
+  background: linear-gradient(90deg, var(--brand), var(--brand-deep));
+  color: #fff;
+  border-radius: 999rpx;
+  font-weight: 600;
+  text-align: center;
+  padding: 22rpx 0;
+}
+.dt-btn.disabled { opacity: .45; }
+.dt-btn.block { display: block; width: 100%; }
+
+/* 通用加/减号 */
+.stepper { display: inline-flex; align-items: center; }
+.stepper .num { min-width: 56rpx; text-align: center; font-weight: 700; color: var(--ink); font-size: 28rpx; }
+.stepper .btn {
+  width: 46rpx; height: 46rpx; border-radius: 50%; background: var(--brand); color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 32rpx; font-weight: 700; line-height: 1;
+}
+.stepper .btn.minus { background: #fff; color: var(--brand); border: 2rpx solid var(--brand); font-size: 28rpx; }
